@@ -80,7 +80,6 @@ public class UsuarioServiceImpl implements UsuarioService{
 		
 		Usuario usuarioAct=usuarioDB.get();
 		
-		logger.info("UsuarioAct: "+usuarioAct.toString());
 		
 		if(usuarioAct!=null && 
 				(usuarioEmail.size()==0 || 
@@ -104,7 +103,6 @@ public class UsuarioServiceImpl implements UsuarioService{
 			
 			usuarioAct.setRoles(roles);
 			Usuario response= usuarioRepository.save(usuarioAct);
-			logger.info("password");
 			return response;
 		}
 		
