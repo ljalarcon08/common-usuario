@@ -74,16 +74,11 @@ public class UsuarioServiceImpl implements UsuarioService{
 		
 		List<UsuarioInterface> usuarioEmail=(List<UsuarioInterface>)this.findUsuarioByEmailNoPs(usuario.getEmail());
 		
-		if(usuarioDB.isEmpty()) {
-			return null;
-		}
-		
 		Usuario usuarioAct=usuarioDB.get();
 		
 		
-		if(usuarioAct!=null && 
-				(usuarioEmail.size()==0 || 
-				(usuarioEmail.size()==1 && usuarioEmail.get(0).getEmail().equals(usuarioAct.getEmail())))) {
+		if(usuarioAct!=null &&
+				(usuarioEmail.size()>0 && usuarioEmail.get(0).getEmail().equals(usuarioAct.getEmail()))) {
 			usuarioAct.setName(usuario.getName());
 
 			if(usuario.getPassword()!=null && !usuario.getPassword().isEmpty()) {
@@ -147,14 +142,15 @@ public class UsuarioServiceImpl implements UsuarioService{
 	public Usuario actualizaImagenUsuario(Long id, String imagen) {
 		
 		Optional<Usuario> usuarioDB=usuarioRepository.findById(id);
-		Usuario usuarioAct=usuarioDB.get();
 		
-		if(usuarioAct!=null) {
+		if(!usuarioDB.isEmpty()) {
+			Usuario usuarioAct=usuarioDB.get();
 			usuarioAct.setImagen(imagen);
 			usuarioRepository.save(usuarioAct);
+			return usuarioAct;
 		}
 		
-		return usuarioAct;
+		return null;
 	}
 	
 	

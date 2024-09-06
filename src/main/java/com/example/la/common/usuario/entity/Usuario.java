@@ -139,9 +139,9 @@ public class Usuario implements Serializable{
 			return false;
 		}
 		
-		final Usuario objUsuario=(Usuario)obj;
+		Usuario objUsuario=(Usuario)obj;
 		
-		if(objUsuario.getId()==null || this.getId()!=null 
+		if(objUsuario.getId()==null || this.getId()==null
 				) {
 			return false;
 		}
