@@ -62,7 +62,16 @@ public class DatabaseConfiguration{
 		System.out.println("Configuration");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(env.getProperty("spring.datasource.driverClassName"));
-		dataSource.setUrl(env.getProperty("spring.datasource.url"));
+
+		String profile=env.getProperty("spring.profiles.active");
+		if(profile!=null && profile.equalsIgnoreCase("docker")){
+			dataSource.setUrl(env.getProperty("url.docker"));
+		}
+		else{
+			dataSource.setUrl(env.getProperty("url.local"));
+		}
+
+		//dataSource.setUrl(env.getProperty("spring.datasource.url"));
 		dataSource.setUsername(env.getProperty("spring.datasource.username"));
 		dataSource.setPassword(env.getProperty("spring.datasource.password"));
 		return dataSource;
