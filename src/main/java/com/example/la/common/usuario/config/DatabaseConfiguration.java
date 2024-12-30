@@ -5,8 +5,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import jakarta.persistence.EntityManagerFactory;
 
+@Generated
 @Configuration
 @ComponentScan
 @EnableTransactionManagement
@@ -62,7 +62,16 @@ public class DatabaseConfiguration{
 		System.out.println("Configuration");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(env.getProperty("spring.datasource.driverClassName"));
-		dataSource.setUrl(env.getProperty("spring.datasource.url"));
+
+		String profile=env.getProperty("spring.profiles.active");
+		if(profile!=null && profile.equalsIgnoreCase("docker")){
+			dataSource.setUrl(env.getProperty("url.docker"));
+		}
+		else{
+			dataSource.setUrl(env.getProperty("url.local"));
+		}
+
+		//dataSource.setUrl(env.getProperty("spring.datasource.url"));
 		dataSource.setUsername(env.getProperty("spring.datasource.username"));
 		dataSource.setPassword(env.getProperty("spring.datasource.password"));
 		return dataSource;
@@ -84,11 +93,7 @@ public class DatabaseConfiguration{
 	private Properties additionalProperties() {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
-		//properties.setProperty("hibernate.dialect", env.getProperty("spring.jpa.properties.hibernate.dialect"));
-		//properties.setProperty("hibernate.current_session_context_class", env.getProperty("spring.jpa.properties.hibernate.current_session_context_class"));
-		//properties.setProperty("hibernate.jdbc.lob.non_contextual_creation", env.getProperty("spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation"));
 		properties.setProperty("hibernate.show_sql", env.getProperty("spring.jpa.show-sql"));
-		//properties.setProperty("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));*/
 		return properties;
 	}
 

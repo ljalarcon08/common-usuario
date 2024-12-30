@@ -50,7 +50,7 @@ public class RolServiceImpl implements RolService{
 		if(roles.isEmpty()) {
 			rolActualizado=rolRepository.save(rol);
 		}
-		else if(rol.getId()==roles.get(0).getId() && roles.size()==1) {
+		else if(rol.getId().equals(roles.get(0).getId())) {
 			rolActualizado=rolRepository.save(rol);
 		}
 		
@@ -61,7 +61,7 @@ public class RolServiceImpl implements RolService{
 	@Transactional
 	@Override
 	public void eliminarRol(Long id) {
-		rolRepository.findById(id);
+		rolRepository.deleteById(id);
 	}
 	
 	
